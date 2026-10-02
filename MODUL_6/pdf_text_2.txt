@@ -1,0 +1,172 @@
+Kemudian simpan kembali file pubspec.yaml dan jalankan perintah flutter pub get  untuk 
+memperbarui dependensi proyek. 
+d. Setelah itu rubah kode pada file main.dart dengan kode berikut: 
+1 import 'package:flutter/material.dart'; 
+2  
+3 void main() => runApp(const MyApp()); 
+4  
+5 class MyApp extends StatelessWidget { 
+6   const MyApp({super.key}); 
+7  
+8   @override 
+9   Widget build(BuildContext context) { 
+10     return MaterialApp( 
+11       title: 'Demo ListView', 
+12       home: Scaffold( 
+13         appBar: AppBar( 
+14           title: const Text('Demo ListView'), 
+15           backgroundColor: Colors.amber, 
+16         ), 
+17         body: ListView( 
+18           padding: const EdgeInsets.all(8), 
+19           children: [ 
+20   //Tile akan ditambahkan 
+21           ], 
+22         ), 
+23       ), 
+24     ); 
+25   } 
+26 } 
+  
+e. Buat method listTile yang menampilkan widget ListTile dengan parameter warna, warnaAvatar, 
+judul, subjudul, dan gambar. 
+Kode program: 
+1 Container listTile(Color warna, Color warnaAvatar, String judul, 
+2     String subjudul, String gambar) { 
+3   return Container( 
+4     padding: const EdgeInsets.symmetric(vertical: 5), 
+5     child: ListTile( 
+6       tileColor: warna, 
+7       title: Text( 
+8         judul, 
+9         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
+10       ), 
+11       subtitle: Text( 
+12         subjudul, 
+13         style: const TextStyle(fontSize: 16), 
+14       ), 
+15       leading: CircleAvatar( 
+16         radius: 30, 
+17         backgroundColor: warnaAvatar, 
+18         child: Image.asset( 
+19           gambar, 
+20           width: 35, 
+21           height: 35, 
+22         ), 
+23       ), 
+24       trailing: Icon( 
+25         Icons.star, 
+26         color: Colors.orangeAccent.shade400, 
+27       ), 
+28     ), 
+29   ); 
+30 } 
+  
+---PAGE---
+f. Modifikasi body pada kelas MyApp dengan menggunakan fungsi listTile sebagai isi children di 
+ListView. 
+Kode program: 
+1 body: ListView( 
+2   padding: const EdgeInsets.all(8), 
+3   children: [ 
+4     listTile( 
+5       Colors.blueAccent.shade400, 
+6       Colors.greenAccent.shade400, 
+7       'Kehadiran', 
+8       'Presensi kehadiran kuliah', 
+9       'assets/icon/boy.png', 
+10     ), 
+11     listTile( 
+12       Colors.greenAccent.shade400, 
+13       Colors.blueAccent.shade400, 
+14       'Jadwal', 
+15       'Jadwal perkuliahan', 
+16       'assets/icon/timetable.png', 
+17     ), 
+18     listTile( 
+19       Colors.yellowAccent.shade400, 
+20       Colors.redAccent.shade400, 
+21       'Tugas', 
+22       'Tugas perkuliahan di luar kelas', 
+23       'assets/icon/homeschooling.png', 
+24     ), 
+25     listTile( 
+26       Colors.redAccent.shade400, 
+27       Colors.amberAccent.shade400, 
+28       'Pengumuman', 
+29       'Informasi terkait perkuliahan', 
+30       'assets/icon/clipboard.png', 
+31     ), 
+32     listTile( 
+33       Colors.purpleAccent.shade400, 
+34       Colors.tealAccent.shade400, 
+35       'Nilai', 
+36       'Nilai ujian dan tugas', 
+37       'assets/icon/marks.png', 
+38     ), 
+39     listTile( 
+40       Colors.tealAccent.shade400, 
+41       Colors.purpleAccent.shade400, 
+42       'Catatan', 
+43       'Pengingat kegiatan perkuliahan', 
+44       'assets/icon/pencil.png', 
+45     ), 
+46   ], 
+47 ), 
+  
+g. Jalankan program. Kemudian amati dan catat hasilnya. 
+Percobaan 3 – GridView.builder 
+a. Buat proyek Flutter baru dengan nama demo_gridview_builder, tunggu sampai template siap 
+digunakan. 
+b. Tambahkan paket dependencies http pada file pubspec.yaml seperti berikut: 
+---PAGE---
+1 dependencies: 
+2   flutter: 
+3     sdk: flutter 
+4   http: ^1.5 
+  
+Simpan kembali file pubspec.yaml. 
+Catata: versi terbaru paket http dapat dicek melalui situs https://pub.dev dengan kata kunci pencarian 
+http. 
+c. Buka file main.dart, kemudian import paket http dan dart:convert. Kemudian ubah kode program 
+pada class MyApp menjadi seperti berikut: 
+1 import 'dart:convert'; 
+2 import 'package:flutter/material.dart'; 
+3 import 'package:http/http.dart' as http; 
+4  
+5 void main() { 
+6   runApp(const MyApp()); 
+7 } 
+8  
+9 class MyApp extends StatelessWidget { 
+10   const MyApp({super.key}); 
+11  
+12   @override 
+13   Widget build(BuildContext context) { 
+14     return MaterialApp( 
+15       title: 'Demo GridView.builder', 
+16       theme: ThemeData( 
+17         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber), 
+18         useMaterial3: true, 
+19       ), 
+20       home: const MyHomePage(title: 'Demo GridView.builder'), 
+21     ); 
+22   } 
+23 } 
+  
+d. Tambahkan class MyHomePage sebagai StatefulWidget. StatefulWidget digunakan karena data 
+yang ditampilkan bersifat dinamis, berasal dari request server. 
+1 class MyHomePage extends StatefulWidget { 
+2   const MyHomePage({super.key, required this.title}); 
+3  
+4   final String title; 
+5  
+6   @override 
+7   State<MyHomePage> createState() => _MyHomePageState(); 
+8 } 
+  
+e. Di dalam class _MyHomePageState, inisiasi List dataBerita untuk menyimpan data berita dari 
+server. Buat method _ambilData() yang bertugas melakukan HTTP request, memproses JSON, 
+dan memperbarui state melalui setState(). Method _ambilData() dipanggil di dalam initState() agar 
+permintaan data dijalankan pada saat widget dibuat, sehingga GridView dapat menampilkan data 
+segera setelah diterima tanpa menunggu interaksi pengguna. 

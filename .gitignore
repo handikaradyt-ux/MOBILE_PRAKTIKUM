@@ -1,0 +1,22 @@
+# Local editor settings and caches
+.idea/
+.dart_tool/
+.gradle/
+.pub-cache/
+.pub/
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+
+# Generated Flutter and platform output
+build/
+ephemeral/
+coverage/
+.flutter-plugins-dependencies
+local.properties
+
+# Local signing credentials
+key.properties
+*.keystore
+*.jks

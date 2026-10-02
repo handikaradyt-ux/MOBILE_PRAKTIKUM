@@ -1,0 +1,157 @@
+Modul VI – Widget GridView, ListView, GridView.builder, dan ListView.builder 
+6.1. Ringkasan 
+Komponen Uraian 
+Tujuan Praktikum 1. Memahami penggunaan widget GridView untuk menampilkan 
+data dalam bentuk kotak-kotak (grid). 
+2. Memahami penggunaan widget ListView untuk menampilkan 
+data dalam bentuk daftar yang dapat digulir (scrollable). 
+3. Mampu membuat tampilan aplikasi yang interaktif 
+menggunakan GridTile, ListTile, dan properti pendukung seperti 
+padding, warna, dan ikon. 
+4. Mampu menggunakan GridView.builder untuk menampilkan 
+data dalam format grid secara dinamis dan efisien. 
+5. Mampu menggunakan ListView.builder untuk menampilkan data 
+dalam format list (daftar) yang panjang dengan pengelolaan 
+memori lebih baik. 
+Dasar Teori 1.  GridView: Widget yang digunakan untuk menampilkan daftar 
+anak-anaknya dalam bentuk grid (baris dan kolom). Properti 
+utama yang sering digunakan antara lain gridDelegate, children, 
+padding, scrollDirection, dan physics. 
+2. ListView: Widget untuk menampilkan daftar data dalam sumbu 
+utama (vertikal atau horizontal) yang dapat digulir. Properti 
+utama meliputi children, padding, dan physics. 
+3. GridTile: Digunakan di dalam GridView untuk menampilkan 
+item dengan elemen seperti gambar, footer, atau judul. 
+4. ListTile: Digunakan di dalam ListView untuk menampilkan 
+daftar item dengan properti leading, title, subtitle, dan trailing. 
+5. GridView.builder: Digunakan untuk membuat grid secara 
+dinamis berdasarkan jumlah data. Lebih efisien karena item 
+hanya dibuat saat ditampilkan di layar. 
+6. ListView.builder: Digunakan untuk membuat daftar item secara 
+dinamis sesuai jumlah data. Cocok untuk data dalam jumlah 
+banyak karena bersifat lazy loading. 
+Alat & Bahan 1.  Flutter SDK, Android Studio / VS Code 
+2. Komputer/laptop dengan emulator atau smartphone 
+Android/iOS 
+3. Asset: Gambar/icon untuk ditampilkan pada GridView/ListView 
+(assets/icon/*.png) 
+Aset gambar/icon: dapat diunduh melalui 
+https://www.flaticon.com dengan kata kunci 
+1. icon boy.png → student 
+2. icon timetable.png → timetable 
+3. icon homeschooling.png → homeschooling 
+4. icon clipboard.png → checklist 
+5. icon marks.png → best grade 
+6. icon pencil.png → pencil 
+6.2. Langkah Kerja 
+Percobaan 1 – GridView 
+a. Buat project Flutter baru dengan nama demo_gridview. 
+b. Buat struktur folder proyek sebagai berikut dan copy gambar/icon ke dalam folder icon 
+---PAGE---
+project_name/ 
+└─ assets/ 
+   └─ icon/ 
+      ├─ boy.png 
+      ├─ timetable.png 
+      ├─ homeschooling.png 
+      ├─ clipboard.png 
+      ├─ marks.png 
+      └─ pencil.png 
+c. Tambahkan aset di pubspec.yaml. 
+1 flutter: 
+2   assets: 
+3     - assets/icon/ 
+  
+Simpan kembali file pubspec.yaml. 
+d. Buka file main.dart, lalu ubah kode awal menjadi seperti berikut: 
+Kode program: 
+1 import 'package:flutter/material.dart'; 
+2  
+3 void main() => runApp(const MyApp()); 
+4  
+5 class MyApp extends StatelessWidget { 
+6   const MyApp({super.key}); 
+7  
+8   @override 
+9   Widget build(BuildContext context) { 
+10     return MaterialApp( 
+11       title: 'Demo GridView', 
+12       home: Scaffold( 
+13         appBar: AppBar( 
+14           title: const Text('Demo GridView'), 
+15           backgroundColor: Colors.amber, 
+16         ), 
+17         body: GridView( 
+18           padding: const EdgeInsets.all(10), 
+19           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount( 
+20             crossAxisCount: 2, 
+21             mainAxisSpacing: 10, 
+22             crossAxisSpacing: 10, 
+23           ), 
+24           scrollDirection: Axis.vertical, 
+25           physics: const NeverScrollableScrollPhysics(), 
+26           children: [ 
+27             // Tile akan ditambahkan 
+28           ], 
+29         ), 
+30       ), 
+31     ); 
+32   } 
+33 } 
+  
+e. Di bawah class MyApp tambahkan sebuah method dengan nama tile untuk membuat Tile. 
+---PAGE---
+1 ClipRRect tile(Color warnaKotak, String gambar, String judul) { 
+2   return ClipRRect( 
+3     borderRadius: BorderRadius.circular(10), 
+4     child: Container( 
+5       color: warnaKotak, 
+6       child: GridTile( 
+7         footer: SizedBox( 
+8           height: 45, 
+9           child: GridTileBar( 
+10             backgroundColor: Colors.black38, 
+11             title: Text( 
+12               judul, 
+13               style: const TextStyle(fontSize: 18, fontWeight: 
+FontWeight.bold), 
+14             ), 
+15           ), 
+16         ), 
+17         child: Image.asset(gambar, scale: 4), 
+18       ), 
+19     ), 
+20   ); 
+21 } 
+  
+f. Selanjutnya, masukkan beberapa widget Tile ke dalam GridView untuk menampilkan item secara 
+teratur dalam bentuk grid. 
+1 children: [ 
+2   tile(Colors.blueAccent.shade400, 'assets/icon/boy.png', 'Kehadiran'), 
+3   tile(Colors.greenAccent.shade400, 'assets/icon/timetable.png', 'Jadwal Kuliah'), 
+4   tile(Colors.yellowAccent.shade400, 'assets/icon/homeschooling.png', 'Tugas'), 
+5   tile(Colors.redAccent.shade400, 'assets/icon/clipboard.png', 'Pengumuman'), 
+6   tile(Colors.purpleAccent.shade400, 'assets/icon/marks.png', 'Nilai'), 
+7   tile(Colors.tealAccent.shade400, 'assets/icon/pencil.png', 'Catatan'), 
+8 ], 
+  
+g. Jalankan program. Kemudian amati dan catat hasilnya. 
+Percobaan 2 – ListView 
+a. Buat proyek baru dengan nama demo_listview. 
+b. Atur struktur folder aset seperti berikut. Kemudian atur file gambar yang telah disediakan ke dalam 
+folder icon. 
+project_name/ 
+└─ assets/ 
+   └─ icon/ 
+      ├─ boy.png 
+      ├─ timetable.png 
+      ├─ homeschooling.png 
+      ├─ clipboard.png 
+      ├─ marks.png 
+      └─ pencil.png 
+c. Lakukan konfigurasi pada file pubspec.yaml untuk mendaftarkan aset folder yang memuat aset 
+gambar sehingga dapat digunakan dalam program. Tambahkan kode berikut di bagian flutter: 
+1 flutter: 
+2   assets: 
+3     - assets/icon/ 
+  
