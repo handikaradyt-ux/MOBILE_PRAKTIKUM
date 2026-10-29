@@ -1,0 +1,376 @@
+[
+  {
+    "id": "resep-01",
+    "name": "Nasi Gila Sosis Bakso",
+    "category": "Cepat",
+    "tags": ["Cepat", "Hemat"],
+    "durationMinutes": 15,
+    "estimatedCost": 12000,
+    "difficulty": "Mudah",
+    "portion": "1 Porsi",
+    "description": "Nasi campur orak-arik telur, sosis sapi, dan bakso berbalut bumbu pedas manis gurih khas gerobak malam favorit anak kos.",
+    "image": "assets/images/nasi_gila.png",
+    "isFeatured": true,
+    "ingredients": [
+      "1 piring nasi putih pulen dingin",
+      "2 butir telur ayam ras",
+      "2 buah sosis sapi, potong serong",
+      "3 butir bakso sapi, iris tipis",
+      "2 siung bawang merah & 1 siung bawang putih, cincang halus",
+      "2 buah cabai rawit merah, iris serong",
+      "1 sdm saus sambal & 1 sdm saus tiram",
+      "1 sdm kecap manis",
+      "1 sdm minyak goreng untuk menumis",
+      "Sejumput garam, merica bubuk, dan kaldu bubuk"
+    ],
+    "steps": [
+      "Panaskan 1 sendok makan minyak goreng di wajan kecil dengan api sedang.",
+      "Pecahkan 2 butir telur langsung ke dalam wajan, buat orak-arik kasar hingga setengah matang, lalu pinggirkan di tepi wajan.",
+      "Tumis cincangan bawang merah, bawang putih, dan irisan cabai rawit hingga harum dan matang layu.",
+      "Masukkan irisan sosis dan bakso sapi, aduk rata bersama orak-arik telur.",
+      "Tambahkan saus tiram, kecap manis, saus sambal, garam, kaldu, dan merica. Aduk cepat selama 2 menit hingga bumbu meresap merata.",
+      "Tata nasi hangat di atas piring, lalu tuangkan tumisan nasi gila gurih di atasnya. Siap disantap selagi hangat!"
+    ]
+  },
+  {
+    "id": "resep-02",
+    "name": "Omelet Mie Telur Crispy",
+    "category": "Hemat",
+    "tags": ["Hemat", "Cepat"],
+    "durationMinutes": 10,
+    "estimatedCost": 7000,
+    "difficulty": "Sangat Mudah",
+    "portion": "1 Porsi",
+    "description": "Perpaduan legendaris mie instan goreng dan kocokan telur dengan bagian luar renyah keemasan dan bagian dalam lembut gurih.",
+    "image": "assets/images/omelet_mie.png",
+    "isFeatured": true,
+    "ingredients": [
+      "1 bungkus mie instan goreng favorit",
+      "2 butir telur ayam",
+      "1 batang daun bawang, iris tipis",
+      "2 buah cabai rawit merah, iris halus (opsional)",
+      "1 sdm minyak goreng atau mentega untuk menggoreng"
+    ],
+    "steps": [
+      "Rebus mie instan dalam air mendidih selama 2 menit saja agar teksturnya tidak terlalu lembek, lalu tiriskan.",
+      "Dalam mangkuk, kocok lepas 2 butir telur bersama bumbu minyak dan bubuk dari bungkus mie instan hingga rata.",
+      "Masukkan mie yang telah ditiriskan, irisan daun bawang, dan cabai rawit ke dalam kocokan telur. Aduk rata.",
+      "Panaskan 1 sdm minyak di wajan datar anti lengket dengan api kecil-sedang.",
+      "Tuang seluruh adonan mie dan ratakan bentuknya menjadi lingkaran pipih.",
+      "Goreng hingga sisi bawah mengering renyah dan berwarna cokelat keemasan, lalu balik perlahan. Masak hingga kedua sisi matang sempurna.",
+      "Angkat dan potong segitiga seperti pizza. Nikmati dengan cocolan saus sambal botol."
+    ]
+  },
+  {
+    "id": "resep-03",
+    "name": "Salad Sayur & Telur Rebus",
+    "category": "Tanpa Kompor",
+    "tags": ["Tanpa Kompor", "Hemat"],
+    "durationMinutes": 8,
+    "estimatedCost": 10000,
+    "difficulty": "Sangat Mudah",
+    "portion": "1 Porsi",
+    "description": "Menu sehat segar berprotein tinggi tanpa kompor gas. Telur bisa direbus di water dispenser / rice cooker dengan saus wijen sangrai.",
+    "image": "assets/images/salad_telur.png",
+    "isFeatured": true,
+    "ingredients": [
+      "2 butir telur rebus matang / setengah matang",
+      "1 ikat kecil selada hijau segar, cuci dan sobek-sobek",
+      "1 buah mentimun jepang / lokal, iris bulat",
+      "1 buah tomat merah segar, potong wedges",
+      "2 sdm saus wijen sangrai (kewpie) atau mayones pedas",
+      "Sejumput biji wijen dan lada hitam tumbuk"
+    ],
+    "steps": [
+      "Siapkan sayuran segar: cuci bersih daun selada, mentimun, dan tomat menggunakan air minum bersih.",
+      "Kupas 2 butir telur rebus yang sudah disiapkan sebelumnya, lalu belah masing-masing menjadi 2 bagian.",
+      "Susun daun selada sebagai dasar di piring atau mangkuk saji kosan.",
+      "Tata irisan mentimun dan potongan tomat segar mengelilingi selada.",
+      "Tempatkan belahan telur rebus di bagian tengah.",
+      "Siramkan 2 sendok makan dressing wijen sangrai di atas sayur dan telur, taburi sedikit lada hitam.",
+      "Salad segar kaya serat dan protein siap dinikmati tanpa perlu menyalakan api kompor."
+    ]
+  },
+  {
+    "id": "resep-04",
+    "name": "Tumis Kangkung Tempe Gurih",
+    "category": "Hemat",
+    "tags": ["Hemat"],
+    "durationMinutes": 12,
+    "estimatedCost": 8000,
+    "difficulty": "Mudah",
+    "portion": "1-2 Porsi",
+    "description": "Kangkung air segar dipadukan dengan tempe goreng renyah bumbu bawang terasi yang harum menggugah selera makan siang.",
+    "image": "assets/images/tumis_kangkung.png",
+    "isFeatured": false,
+    "ingredients": [
+      "1 ikat kangkung segar, siangi daun dan batang mudanya",
+      "1/2 papan tempe (sekitar 100g), potong dadu kecil",
+      "3 siung bawang merah & 2 siung bawang putih, iris tipis",
+      "3 buah cabai merah keriting & 2 buah cabai rawit, iris serong",
+      "1 sdm saus tiram",
+      "1/2 sdt terasi bakar (opsional)",
+      "2 sdm minyak goreng",
+      "50 ml air matang",
+      "Garam dan gula pasir secukupnya"
+    ],
+    "steps": [
+      "Goreng potongan tempe dadu dalam sedikit minyak hingga setengah garing kecokelatan, lalu tiriskan.",
+      "Gunakan sisa 1 sendok makan minyak di wajan untuk menumis bawang merah, bawang putih, terasi, dan cabai hingga tercium aroma wangi.",
+      "Masukkan potongan kangkung yang sudah dicuci bersih dengan api kompor diperbesar.",
+      "Tambahkan saus tiram, sedikit garam, dan gula, lalu tuangkan 50 ml air matang.",
+      "Masukkan tempe goreng, tumis cepat selama kurang lebih 2-3 menit agar kangkung tetap renyah dan berwarna hijau segar.",
+      "Koreksi rasa, angkat dan sajikan langsung bersama nasi putih hangat."
+    ]
+  },
+  {
+    "id": "resep-05",
+    "name": "Sarden Saus Tomat Pedas",
+    "category": "Cepat",
+    "tags": ["Cepat"],
+    "durationMinutes": 10,
+    "estimatedCost": 15000,
+    "difficulty": "Sangat Mudah",
+    "portion": "1-2 Porsi",
+    "description": "Ikan sarden kaleng praktis ditumis ulang dengan racikan bumbu segar, perasan jeruk nipis, dan cabai rawit pedas mantap.",
+    "image": "assets/images/sarden_pedas.png",
+    "isFeatured": false,
+    "ingredients": [
+      "1 kaleng kecil sarden rasa saus tomat (155g)",
+      "3 siung bawang merah, iris tipis",
+      "2 siung bawang putih, cincang",
+      "5 buah cabai rawit merah, iris serong",
+      "1/2 buah tomat merah, potong kasar",
+      "1/2 buah jeruk nipis, peras airnya",
+      "1 sdm minyak goreng",
+      "Sedikit garam dan gula pasir untuk penyeimbang rasa"
+    ],
+    "steps": [
+      "Panaskan 1 sendok makan minyak goreng di wajan kecil.",
+      "Tumis bawang merah, bawang putih, dan cabai rawit hingga harum dan layu.",
+      "Buka kaleng sarden, tuangkan perlahan ke dalam wajan beserta saus tomatnya.",
+      "Tambahkan potongan tomat merah segar, sejumput gula, dan sedikit garam.",
+      "Masak dengan api sedang selama 5 menit hingga kuah mendidih dan mengental harum.",
+      "Beri perasan air jeruk nipis sesaat sebelum diangkat untuk menghilangkan aroma amis dan memberi kesegaran.",
+      "Sajikan panas-panas bersama nasi putih pulen."
+    ]
+  },
+  {
+    "id": "resep-06",
+    "name": "Overnight Oats Pisang Madu",
+    "category": "Tanpa Kompor",
+    "tags": ["Tanpa Kompor", "Cepat"],
+    "durationMinutes": 5,
+    "estimatedCost": 12000,
+    "difficulty": "Sangat Mudah",
+    "portion": "1 Porsi",
+    "description": "Sarapan praktis tanpa kompor untuk pagi hari yang sibuk kuliah. Cukup rendam semalam di kulkas kosan.",
+    "image": "assets/images/overnight_oats.png",
+    "isFeatured": false,
+    "ingredients": [
+      "4 sdm rolled oat atau oatmeal instan",
+      "100 ml susu cair UHT full cream atau susu kedelai",
+      "1 sdm madu murni atau kental manis",
+      "1 buah pisang ambon matang, iris bulat tipis",
+      "1 sdt chia seeds atau remahan biskuit marie (opsional)",
+      "Sedikit bubuk kayu manis untuk taburan"
+    ],
+    "steps": [
+      "Siapkan wadah toples kaca kecil atau mangkuk bertutup milik anak kos.",
+      "Masukkan 4 sendok makan oatmeal ke dalam wadah.",
+      "Tuangkan susu cair UHT dan 1 sendok makan madu, lalu aduk sampai semua oat terendam susu.",
+      "Tutup wadah rapat-rapat dan simpan di kulkas minimal 3 jam atau semalaman.",
+      "Saat hendak disantap, buka tutup wadah dan tata irisan buah pisang matang di atasnya.",
+      "Beri taburan sedikit bubuk kayu manis. Nikmati sarapan dingin yang mengenyangkan dan sehat!"
+    ]
+  },
+  {
+    "id": "resep-07",
+    "name": "Tahu Bakso Kukus Rice Cooker",
+    "category": "Tanpa Kompor",
+    "tags": ["Tanpa Kompor", "Hemat"],
+    "durationMinutes": 20,
+    "estimatedCost": 13000,
+    "difficulty": "Mudah",
+    "portion": "2 Porsi",
+    "description": "Camilan gurih kenyal padat gizi yang dimasak cukup memakai baki kukusan rice cooker tanpa perlu gas kompor.",
+    "image": "assets/images/tahu_bakso.png",
+    "isFeatured": false,
+    "ingredients": [
+      "5 buah tahu cokelat / tahu pong segitiga",
+      "100 gram daging ayam giling atau olahan bakso siap pakai",
+      "2 sdm tepung tapioka",
+      "1 butir putih telur",
+      "1 siung bawang putih halus",
+      "1 batang daun bawang, cincang halus",
+      "1/2 sdt garam, lada bubuk, dan kaldu bubuk"
+    ],
+    "steps": [
+      "Belah satu sisi tahu cokelat, keluarkan sedikit bagian dalamnya untuk memberi ruang isian.",
+      "Dalam mangkuk, campurkan ayam giling, tepung tapioka, putih telur, bawang putih halus, daun bawang, garam, lada, dan kaldu.",
+      "Aduk adonan hingga tercampur rata dan bertekstur kalis kenyal.",
+      "Ambil 1 sendok makan adonan, lalu isikan padat ke dalam rongga tahu cokelat.",
+      "Isi panci rice cooker dengan 2 gelas air, pasang baki kukusan plastik bawaan rice cooker.",
+      "Tata tahu yang sudah diisi di atas baki kukusan, tutup rice cooker, lalu tekan tombol 'Cook'.",
+      "Kukus selama 15-20 menit hingga adonan bakso matang memadat. Sajikan dengan cocolan saus sambal atau cabai rawit hijau."
+    ]
+  },
+  {
+    "id": "resep-08",
+    "name": "Nasi Goreng Rice Cooker",
+    "category": "Cepat",
+    "tags": ["Cepat", "Hemat"],
+    "durationMinutes": 15,
+    "estimatedCost": 9000,
+    "difficulty": "Mudah",
+    "portion": "1 Porsi",
+    "description": "Memanfaatkan nasi sisa kemarin menjadi nasi goreng harum gurih langsung di dalam panci rice cooker anti repot.",
+    "image": "assets/images/nasgor_ricecooker.png",
+    "isFeatured": false,
+    "ingredients": [
+      "1 piring nasi putih dingin (paling pas nasi sisa semalam)",
+      "1 butir telur ayam",
+      "2 siung bawang merah & 1 siung bawang putih, cincang",
+      "1 sdm margarin atau mentega",
+      "1 sdm kecap manis & 1 sdt kecap asin",
+      "1/2 sdt kaldu bubuk dan merica",
+      "Taburan bawang goreng renyah"
+    ],
+    "steps": [
+      "Colokkan rice cooker, masukkan 1 sendok makan margarin ke dalam panci, tekan tombol 'Cook' dan tunggu hingga margarin meleleh panas.",
+      "Masukkan cincangan bawang merah dan bawang putih ke dalam panci, tumis menggunakan sendok nasi kayu hingga harum.",
+      "Pecahkan 1 butir telur langsung ke dalam panci, aduk cepat hingga terbentuk orak-arik telur.",
+      "Masukkan sepiring nasi putih dingin, lalu aduk merata bersama telur dan tumisan bawang.",
+      "Bumbui dengan kecap manis, kecap asin, kaldu bubuk, dan merica.",
+      "Aduk terus hingga nasi tercampur warna cokelat merata dan harum berasap (sekitar 5 menit).",
+      "Pindahkan nasi goreng ke piring, taburi bawang goreng, dan nikmati hangat!"
+    ]
+  },
+  {
+    "id": "resep-09",
+    "name": "Sup Telur Sutra Tofu Hangat",
+    "category": "Hemat",
+    "tags": ["Hemat", "Cepat"],
+    "durationMinutes": 12,
+    "estimatedCost": 11000,
+    "difficulty": "Mudah",
+    "portion": "1-2 Porsi",
+    "description": "Sup kaldu bening gurih menenangkan berisi serabut telur sutra, potongan tahu jepang lembut, dan aroma minyak wijen.",
+    "image": "assets/images/sup_telur_tofu.png",
+    "isFeatured": false,
+    "ingredients": [
+      "1 buah egg tofu / tahu sutra jepang, potong bulat tebal",
+      "1 butir telur ayam, kocok lepas",
+      "1/2 buah wortel kecil, iris tipis bulat",
+      "2 siung bawang putih, geprek dan cincang kasar",
+      "400 ml air kaldu ayam atau air matang biasa",
+      "1 sdt minyak wijen",
+      "1 sdt saus tiram",
+      "1 sdt maizena yang dilarutkan dengan 1 sdm air",
+      "Garam, merica, dan daun seledri cincang secukupnya"
+    ],
+    "steps": [
+      "Panaskan sedikit minyak, tumis bawang putih cincang hingga kekuningan dan harum.",
+      "Tuangkan 400 ml air ke dalam panci, biarkan hingga air mulai mendidih.",
+      "Masukkan irisan wortel dan potongan egg tofu secara perlahan agar tahu tidak hancur.",
+      "Bumbui dengan saus tiram, garam, dan merica secukupnya.",
+      "Tuang larutan maizena sambil diaduk perlahan agar kuah sup sedikit mengental lembut.",
+      "Tuang kocokan telur sedikit demi sedikit sambil kuah diputar memutar dengan sendok agar terbentuk serabut telur sutra cantik.",
+      "Beri tetesan minyak wijen dan taburan daun seledri, matikan api dan hidangkan hangat."
+    ]
+  },
+  {
+    "id": "resep-10",
+    "name": "Roti Panggang Alpukat Telur",
+    "category": "Tanpa Kompor",
+    "tags": ["Tanpa Kompor"],
+    "durationMinutes": 7,
+    "estimatedCost": 14000,
+    "difficulty": "Sangat Mudah",
+    "portion": "1 Porsi",
+    "description": "Avocado toast ala cafe versi hemat anak kos tanpa kompor. Mengenyangkan, kaya lemak baik, dan siap dalam 7 menit.",
+    "image": "assets/images/roti_alpukat.png",
+    "isFeatured": false,
+    "ingredients": [
+      "2 lembar roti tawar gandum atau roti tawar putih",
+      "1/2 buah alpukat matang mentega",
+      "1 butir telur rebus matang, iris tipis",
+      "1/2 sdt perasan air lemon / jeruk nipis",
+      "Sejumput garam halus, lada hitam bubuk, dan bubuk cabai",
+      "1 sdt margarin untuk olesan roti"
+    ],
+    "steps": [
+      "Gunakan roti yang sudah dipanggang sebelumnya atau panggang dengan toaster listrik hingga renyah; tidak perlu menyalakan kompor.",
+      "Keruk daging alpukat ke dalam mangkuk kecil, beri perasan jeruk nipis dan sejumput garam.",
+      "Lumatkan alpukat menggunakan garpu hingga teksturnya creamy namun tetap menyisakan tekstur kasar.",
+      "Oleskan lumatan alpukat tebal-tebal di atas permukaan roti panggang yang renyah.",
+      "Tata irisan telur rebus di atas lapisan alpukat.",
+      "Taburkan sedikit lada hitam bubuk dan cabai bubuk untuk sentuhan rasa gurih pedas.",
+      "Roti panggang alpukat siap dinikmati sebagai sarapan mewah ala kosan."
+    ]
+  },
+  {
+    "id": "resep-11",
+    "name": "Sambal Tempe Kemangi Pedas",
+    "category": "Hemat",
+    "tags": ["Hemat"],
+    "durationMinutes": 15,
+    "estimatedCost": 8000,
+    "difficulty": "Mudah",
+    "portion": "2 Porsi",
+    "description": "Tempe goreng gurih yang dihancurkan kasar bersama sambal ulek pedas segar dan wangi daun kemangi khas Sunda.",
+    "image": "assets/images/sambal_tempe.png",
+    "isFeatured": false,
+    "ingredients": [
+      "1/2 papan tempe (150g), potong dadu atau balok",
+      "1 ikat daun kemangi segar, petik daunnya",
+      "8 buah cabai rawit merah",
+      "4 buah cabai merah keriting",
+      "3 siung bawang merah & 1 siung bawang putih",
+      "1/2 sdt terasi matang (opsional)",
+      "1/2 sdt garam dan 1/2 sdt gula pasir",
+      "Minyak secukupnya untuk menggoreng tempe"
+    ],
+    "steps": [
+      "Goreng potongan tempe dalam minyak panas hingga berwarna cokelat keemasan dan matang, lalu angkat dan tiriskan.",
+      "Goreng sebentar cabai rawit, cabai merah, dan bawang merah di sisa minyak goreng selama 1 menit hingga layu.",
+      "Pindahkan cabai dan bawang ke atas cobek. Tambahkan garam, gula, dan sedikit terasi matang.",
+      "Ulek sambal hingga tingkat kehalusan yang diinginkan.",
+      "Masukkan tempe goreng yang masih hangat ke dalam cobek, lalu bejek/tekan-tekan tempe bersama sambal sampai sedikit hancur merata.",
+      "Masukkan daun kemangi segar, lalu aduk sebentar bersama tempe sambal.",
+      "Sajikan langsung di atas cobek bersama nasi hangat kepul-kepul."
+    ]
+  },
+  {
+    "id": "resep-12",
+    "name": "Mie Dok-Dok Kuah Nyemek Burjo",
+    "category": "Cepat",
+    "tags": ["Cepat"],
+    "durationMinutes": 10,
+    "estimatedCost": 10000,
+    "difficulty": "Sangat Mudah",
+    "portion": "1 Porsi",
+    "description": "Mie kuah kental gurih legendaris ala warung burjo Yogyakarta dengan kocokan telur berserabut dan irisan sayuran segar.",
+    "image": "assets/images/mie_dokdok.png",
+    "isFeatured": false,
+    "ingredients": [
+      "1 bungkus mie instan rebus rasa kari ayam / kuah spesial",
+      "1 butir telur ayam",
+      "2 lembar daun kol / sawi hijau, potong kasar",
+      "2 siung bawang merah & 1 siung bawang putih, cincang",
+      "3 buah cabai rawit, iris tipis",
+      "1 sdm saus sambal & 1 sdt kecap manis",
+      "250 ml air matang",
+      "1 sdm minyak goreng"
+    ],
+    "steps": [
+      "Panaskan 1 sendok makan minyak di wajan kecil.",
+      "Tumis bawang merah, bawang putih, dan cabai rawit hingga harum dan kecokelatan.",
+      "Pecahkan 1 butir telur, buat orak-arik kasar di samping bumbu tumis.",
+      "Tuangkan 250 ml air matang, masukkan saus sambal, kecap manis, dan bumbu bubuk bawaan mie instan.",
+      "Setelah air mendidih, masukkan kepingan mie instan dan irisan kol/sawi.",
+      "Masak selama 3 menit sambil diaduk perlahan hingga kuah mengental menyusut (nyemek).",
+      "Tuang ke mangkuk saji kosan, beri taburan bawang goreng jika ada, dan nikmati selagi panas."
+    ]
+  }
+]
