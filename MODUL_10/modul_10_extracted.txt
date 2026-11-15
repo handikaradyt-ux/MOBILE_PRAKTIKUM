@@ -1,0 +1,1440 @@
+Page count: 16
+
+=== PAGE 1 ===
+Modul X - Desain GUI, Navigasi, dan Integrasi API dengan JSON Serialization di Flutter 
+10.1. Ringkasan 
+Komponen 
+Uraian 
+Tujuan Praktikum 
+1. Mendesain antarmuka (GUI) aplikasi Flutter yang interaktif dan 
+responsif. 
+2. Menerapkan sistem navigasi antarhalaman menggunakan 
+mekanisme named route. 
+3. Membuat model data dengan JSON serialization dan 
+deserialization. 
+4. Mengintegrasikan data dari API eksternal ke dalam aplikasi 
+menggunakan paket http. 
+5. Menampilkan data hasil permintaan API ke layar aplikasi 
+dengan tata letak yang rapi dan dinamis.
+Dasar Teori 
+Dalam pengembangan aplikasi Flutter, tiga konsep penting yang 
+sering digunakan bersamaan adalah desain antarmuka (GUI), 
+navigasi antarhalaman, dan manajemen data melalui model JSON. 
+1. Desain GUI (Graphical User Interface) 
+Flutter menyediakan kumpulan widget siap pakai untuk 
+membangun antarmuka pengguna yang menarik. Widget seperti 
+ListView dan Card sering digunakan untuk menampilkan data 
+dengan tata letak yang rapi, terstruktur, dan mudah dibaca oleh 
+pengguna. 
+2. Navigasi dengan Named Route 
+Navigasi merupakan mekanisme untuk berpindah dari satu 
+halaman (screen) ke halaman lain dalam aplikasi. Dengan 
+menggunakan named route, setiap halaman memiliki label unik 
+(berupa string) yang didaftarkan di dalam MaterialApp, 
+sehingga proses navigasi menjadi lebih terstruktur dan mudah 
+dikelola. 
+3. Model dan JSON Serialization 
+JSON (JavaScript Object Notation) adalah format pertukaran 
+data yang ringan dan mudah dibaca, serta banyak digunakan 
+dalam komunikasi data melalui API. Dalam Flutter data sering 
+kali dikirim atau diterima dalam format JSON. Oleh karena itu 
+diperlukan proses serialization (mengubah objek Dart menjadi 
+JSON) dan deserialization (mengubah JSON menjadi objek 
+Dart). Dengan paket json_serializable, proses konversi dapat 
+dilakukan secara otomatis melalui kode program yang 
+dihasilkan oleh code generator yang dijalankan menggunakan 
+perintah build_runner. 
+4. Integrasi API 
+Pada umumnya aplikasi mengambil data dari API eksternal 
+menggunakan paket http. Data dalam format JSON yang 
+diterima kemudian diubah menjadi model Dart, agar dapat 
+digunakan dan ditampilkan pada antarmuka aplikasi.
+Alat & Bahan 
+1. Perangkat lunak: 
+- Flutter SDK (versi stabil terbaru) 
+- Android Studio atau VS Code 
+- Emulator Android / Perangkat fisik 
+2. Paket pendukung: 
+- http
+
+
+=== PAGE 2 ===
+- json_annotation 
+- json_serializable 
+- build_runner 
+3. Koneksi internet aktif (untuk mengakses API eksternal)
+ 
+10.2. Langkah Kerja 
+Tahap 1 – Bagian Home 
+a. Buat proyek baru dengan nama game_app. 
+b. Di dalam folder proyek buat tiga folder dengan nama model, view, viewmodel sehingga 
+strukturnya sekarang menjadi sebagai berikut: 
+lib/ 
+ ├─ model/ 
+ ├─ view/ 
+ └─ viewmodel/ 
+Folder model berisi kelas-kelas data, view untuk tampilan (UI), dan viewmodel untuk logika 
+pengambilan data dari API. 
+c. Buka file pubspec.yaml, lalu tambahkan baris berikut di bawah bagian dependencies: 
+1
+dependencies: 
+2
+  flutter: 
+3
+    sdk: flutter 
+4
+ http: ^1.1.0
+5
+  json_annotation: ^4.9.0 
+6
+  readmore: ^2.2.0 
+ 
+Dan di bawah bagian dev_dependencies tambahkan: 
+1
+dev_dependencies: 
+2
+  flutter_test: 
+3
+    sdk: flutter 
+4
+  build_runner: ^2.4.8 
+5
+ json_serializable: ^6.7.1
+ 
+Simpan file pubspec.yaml, lalu jalankan perintah berikut di terminal flutter pub get. Perintah ini 
+akan mengunduh dan memasang semua paket yang dibutuhkan. 
+d. Buka file main.dart di folder lib/, lalu isi dengan kode berikut: 
+1
+import 'package:flutter/material.dart'; 
+2
+import 'package:flutter/services.dart'; 
+3
+import 'package:game_app/view/home.dart'; 
+4
+ 
+5
+void main() { 
+6
+  runApp(const MyApp()); 
+7
+} 
+8
+ 
+9
+class MyApp extends StatelessWidget { 
+10
+  const MyApp({super.key}); 
+11
+ 
+12
+  @override 
+13
+  Widget build(BuildContext context) { 
+14
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle( 
+15
+      statusBarColor: Colors.transparent, 
+16
+      statusBarIconBrightness: Brightness.dark, 
+17
+    )); 
+18
+ 
+19
+    return const MaterialApp( 
+20
+      debugShowCheckedModeBanner: false, 
+21
+      title: 'Flutter Game Store', 
+22
+      home: Home(), 
+23
+    ); 
+24
+  } 
+25
+} 
+ 
+
+
+=== PAGE 3 ===
+Pada tahap ini, aplikasi akan langsung menampilkan halaman Home() saat dijalankan. Namun 
+nantinya mekanisme navigasinya akan diubah menggunakan named route agar lebih terstruktur. 
+e. Buat file baru di folder view/ dengan nama home.dart. Kemudian buat kelas baru dengan nama 
+home yang merupakan turunan dari statefulwidget. 
+f. Di awal program import terlebih dahulu paket-paket yang diperlukan: 
+1
+import 'package:game_app/model/game.dart'; 
+2
+import 'package:game_app/viewmodel/fetchgame.dart'; 
+ 
+g. Tambahkan kode program di bagian class _HomeState sebelum method build dengan kode 
+program berikut: 
+1
+class _HomeState extends State<Home> {
+2
+  late Future<List<Game>> gameList; 
+3
+ 
+4
+  @override 
+5
+  void initState() { 
+6
+    super.initState(); 
+7
+   loadGames();
+8
+  } 
+9
+ 
+10
+  Future<List<Game>> loadGames() async { 
+11
+    gameList = fetchGames(); 
+12
+   return gameList;
+13
+  } 
+14
+ 
+15
+  @override 
+16
+  Widget build(BuildContext context) { 
+17
+    return const Placeholder(); 
+18
+ }
+19
+} 
+ 
+- 
+late Future<List<Game>> gameList; 
+Variabel ini digunakan untuk menyimpan future object berisi List data Game yang akan diambil 
+dari API. Kata kunci late menunjukkan bahwa variabel ini akan diinisialisasi nanti (bukan saat 
+deklarasi), tetapi pasti akan memiliki nilai sebelum digunakan. 
+- 
+initState() 
+Merupakan lifecycle method pada StatefulWidget yang dipanggil pertama kali saat widget 
+dibuat. Di sini dipanggil loadGames() agar data dari API langsung dimuat saat halaman 
+ditampilkan pertama kali. 
+- 
+loadGames() 
+Method ini menjalankan fungsi fetchGames() yang nantinya bertugas mengambil data game 
+dari API eksternal. Hasil pemanggilan disimpan ke dalam variabel gameList. Karena 
+pemanggilan API membutuhkan waktu, method ini dideklarasikan sebagai async dan 
+mengembalikan Future<List<Game>>. 
+h. Pada method build() di dalam class _HomeState ubah kode programnya menjadi sebagai berikut: 
+
+
+=== PAGE 4 ===
+1
+@override 
+2
+Widget build(BuildContext context) { 
+3
+  return Scaffold( 
+4
+   backgroundColor: Colors.amberAccent.shade400,
+5
+   body: SafeArea(
+6
+     child: Container(
+7
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5), 
+8
+       child: Column(
+9
+         children: const [
+10
+            Text("Halaman Home (sementara)"), 
+11
+          ], 
+12
+       ),
+13
+      ), 
+14
+    ), 
+15
+  ); 
+16
+} 
+ 
+Widget Column untuk sementara berisi teks “Halaman Home (sementara)” sebagai placeholder, 
+yang nantinya akan diganti dengan widget lain yaitu Search Bar dan ListView. 
+i. Tambahkan fungsi _searchBar() di luar kelas _HomeState untuk membuat Search Bar. Kode 
+programnya sebagai berikut: 
+1
+TextField _searchBar() { 
+2
+  return TextField( 
+3
+    cursorColor: Colors.blue, 
+4
+   decoration: InputDecoration(
+5
+     fillColor: Colors.blue.shade50,
+6
+     filled: true,
+7
+      border: OutlineInputBorder( 
+8
+         borderRadius: BorderRadius.circular(20),
+9
+         borderSide: const BorderSide(
+10
+            width: 0, 
+11
+            style: BorderStyle.none, 
+12
+         )),
+13
+      contentPadding: const EdgeInsets.symmetric( 
+14
+        vertical: 0, 
+15
+        horizontal: 20, 
+16
+     ),
+17
+     prefixIcon: const Icon(
+18
+        Icons.search_outlined, 
+19
+        color: Colors.blue, 
+20
+        size: 30, 
+21
+      ), 
+22
+      hintText: 'Cari game', 
+23
+      hintStyle: TextStyle(fontSize: 14, color: Colors.grey.withOpacity(0.7)), 
+24
+   ),
+25
+  ); 
+26
+} 
+ 
+Fungsi ini mengembalikan TextField yang digunakan sebagai kolom pencarian di halaman Home. 
+Letakkan pemanggilan _searchBar() di dalam Column pada method build(). 
+j. Pada method build() di dalam class _HomeState, ganti teks placeholder sebelumnya dengan 
+pemanggilan fungsi _searchBar() di bagian atas Column, diikuti dengan widget SizedBox untuk 
+memberi jarak ke ListView. 
+1
+child: Column( 
+2
+  children: [ 
+3
+    _searchBar(), // Memanggil fungsi Search Bar 
+4
+   const SizedBox(
+5
+     height: 10, // Memberi jarak antara Search Bar dan ListView
+6
+   ),
+7
+    // Widget ListView akan ditambahkan di langkah berikutnya 
+8
+ ],
+9
+),
+ 
+_searchBar() posisinya berada di urutan pertama sehingga kolom pencarian tampil di atas daftar 
+game. SizedBox digunakan untuk memberi jarak visual antara Search Bar dan ListView nantinya. 
+
+
+=== PAGE 5 ===
+k. Selanjutnya buat method _listItem() bertanggung jawab untuk membuat tampilan setiap item game 
+di dalam ListView. Letakkan method ini di luar class _HomeState dengan kode program sebagai 
+berikut: 
+1
+Card _listItem( 
+2
+  String urlCover, 
+3
+  String judul, 
+4
+  String genre, 
+5
+) { 
+6
+  return Card( 
+7
+    clipBehavior: Clip.antiAlias, 
+8
+    elevation: 3, 
+9
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), 
+10
+    child: ListTile( 
+11
+      tileColor: Colors.blue.shade50, 
+12
+      leading: SizedBox( 
+13
+        width: 75, 
+14
+        height: 75, 
+15
+        child: ClipRRect( 
+16
+          borderRadius: BorderRadius.circular(8), 
+17
+          child: Image.network( 
+18
+            urlCover, 
+19
+            scale: 3, 
+20
+            fit: BoxFit.cover, 
+21
+          ), 
+22
+        ), 
+23
+      ), 
+24
+      title: Text(judul), 
+25
+      subtitle: Text(genre), 
+26
+      trailing: const Icon(Icons.more_vert), 
+27
+      isThreeLine: false, 
+28
+     titleAlignment: ListTileTitleAlignment.center,
+29
+    ), 
+30
+  ); 
+31
+} 
+ 
+Widget Card memberikan efek elevasi (bayangan) dan membungkus konten. ListTile memudahkan 
+pengaturan leading, title, subtitle, dan trailing secara konsisten. Image.network menampilkan 
+gambar dari URL yang diterima API. Properti titleAlignment: ListTileTitleAlignment.center 
+membuat teks judul berada di tengah secara vertikal. 
+l. Kemudian tambahkan widget FutureBuilder di bawah SizedBox untuk menampilkan daftar game 
+secara dinamis dari API. Letakkan tepat setelah _searchBar() dan SizedBox dalam Column. 
+1
+FutureBuilder<List<Game>>( 
+2
+  future: fetchGames(), // Memanggil fungsi fetchGames dari viewmodel 
+3
+  builder: (context, snapshot) { 
+4
+    if (snapshot.connectionState == ConnectionState.waiting) { 
+5
+      return const Expanded( 
+6
+        child: Center( 
+7
+          child: CircularProgressIndicator(), 
+8
+        ), 
+9
+      ); 
+10
+    } else if (snapshot.hasError) { 
+11
+      return Text('Error: ${snapshot.error}'); 
+12
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) { 
+13
+      return const Text('Tidak ada data game.'); 
+14
+    } else { 
+15
+      final games = snapshot.data!.take(25).toList(); 
+16
+      return Expanded( 
+17
+        child: ListView.builder( 
+18
+          itemCount: games.length, 
+19
+          itemBuilder: (context, index) { 
+20
+            final game = games[index]; 
+21
+            return GestureDetector( 
+22
+              onTap: () { 
+23
+                Navigator.pushNamed( 
+24
+                  context, 
+25
+                  '/detail', // Route berlabel untuk halaman detail 
+26
+                  arguments: game.id, // Mengirim id game ke halaman detail 
+27
+                ); 
+28
+              }, 
+29
+              child: _listItem( 
+30
+                game.thumbnail, 
+31
+                game.title, 
+32
+                game.genre, 
+33
+              ), 
+34
+            ); 
+35
+          }, 
+36
+       ),
+37
+      ); 
+38
+    } 
+39
+ },
+40
+), 
+ 
+
+
+=== PAGE 6 ===
+- 
+FutureBuilder<List<Game>> 
+Digunakan untuk menunggu dan membangun UI berdasarkan data Future dari fetchGames(). 
+Widget ini menangani berbagai state: loading, error, atau data tersedia. 
+- 
+snapshot.connectionState == ConnectionState.waiting 
+Menunjukkan bahwa data masih dalam proses pengambilan. Selama ini, ditampilkan 
+CircularProgressIndicator sebagai indikator loading. 
+- 
+snapshot.hasError 
+Menangani kondisi ketika terjadi kesalahan saat mengambil data. Error ditampilkan berupa 
+teks. 
+- 
+snapshot.data!.isEmpty 
+Jika data kosong, akan ditampilkan teks “Tidak ada data game.” 
+- 
+ListView.builder 
+Membuat daftar widget berdasarkan data game yang tersedia. Setiap item menggunakan 
+_listItem() untuk menampilkan thumbnail, judul, dan genre game. 
+- 
+GestureDetector 
+Menangkap interaksi klik pada item game. Saat diklik, aplikasi berpindah ke halaman detail. 
+- 
+Navigator.pushNamed 
+Menggunakan named route untuk navigasi ke halaman detail dan mengirim game.id sebagai 
+argumen ke halaman tersebut. 
+m. Setelah itu buat method fetchGames() yang bertanggung jawab untuk mengambil data game dari 
+API eksternal dan mengubahnya menjadi list objek Game. Letakkan method ini di dalam file 
+viewmodel/fetchgame.dart dengan kode program sebagai berikut: 
+1
+import 'dart:convert';
+2
+import 'package:game_app/model/game.dart'; 
+3
+import 'package:http/http.dart' as http;
+4
+5
+Future<List<Game>> fetchGames() async {
+6
+  final response = await 
+http.get(Uri.parse('https://www.freetogame.com/api/games')); 
+7
+8
+  if (response.statusCode == 200) { 
+9
+    final List<dynamic> jsonData = json.decode(response.body); 
+10
+    return jsonData.map((item) => Game.fromJson(item)).toList(); 
+11
+ } else {
+12
+   throw Exception('Gagal mengambil data game');
+13
+  } 
+14
+}
+ 
+- 
+http.get(Uri.parse(...)) digunakan untuk memanggil API eksternal dan mengambil data game. 
+- 
+json.decode(response.body) mengubah JSON string menjadi List dinamis. 
+- 
+jsonData.map((item) => Game.fromJson(item)).toList() mengonversi setiap elemen JSON 
+menjadi objek Game. 
+- 
+Future<List<Game>> menunjukkan bahwa pemanggilan API bersifat asynchronous, 
+sehingga method ini mengembalikan Future. 
+
+
+=== PAGE 7 ===
+n. Berikutnya buat class Game sebagai model untuk menyimpan data game yang diterima dari API. 
+Letakkan class ini di dalam file model/game.dart dengan kode program sebagai berikut: 
+1
+class Game { 
+2
+  final int id; 
+3
+  final String title; 
+4
+  final String thumbnail; 
+5
+  final String shortDescription; 
+6
+  final String gameUrl; 
+7
+  final String genre; 
+8
+  final String platform; 
+9
+  final String publisher; 
+10
+  final String developer; 
+11
+  final String releaseDate; 
+12
+  final String freetogameProfileUrl; 
+13
+ 
+14
+  Game({ 
+15
+    required this.id, 
+16
+    required this.title, 
+17
+    required this.thumbnail, 
+18
+    required this.shortDescription, 
+19
+    required this.gameUrl, 
+20
+    required this.genre, 
+21
+    required this.platform, 
+22
+    required this.publisher, 
+23
+    required this.developer, 
+24
+    required this.releaseDate, 
+25
+    required this.freetogameProfileUrl, 
+26
+  }); 
+27
+ 
+28
+  factory Game.fromJson(Map<String, dynamic> json) { 
+29
+    return Game( 
+30
+      id: json['id'], 
+31
+      title: json['title'], 
+32
+      thumbnail: json['thumbnail'], 
+33
+      shortDescription: json['short_description'], 
+34
+      gameUrl: json['game_url'], 
+35
+      genre: json['genre'], 
+36
+      platform: json['platform'], 
+37
+      publisher: json['publisher'], 
+38
+      developer: json['developer'], 
+39
+      releaseDate: json['release_date'], 
+40
+      freetogameProfileUrl: json['freetogame_profile_url'], 
+41
+    ); 
+42
+  } 
+43
+} 
+ 
+- 
+factory Game.fromJson adalah method yang mengubah data JSON menjadi objek Game. 
+- 
+Setiap properti final menjamin bahwa nilai atribut tidak berubah setelah objek dibuat. 
+- 
+Class Game digunakan di FutureBuilder pada Home untuk menampilkan daftar game. 
+o. Sekarang jalankan terlebih dahulu programnya. Maka di bagian Home menampilkan List game 
+seperti gambar berikut: 
+ 
+
+
+=== PAGE 8 ===
+ 
+Tahap 2 – Bagian Detail 
+a. Buat file baru di folder view/ dengan nama detail.dart. 
+b. Dalam file tersebut buat class baru bernama Detail yang merupakan turunan dari StatelessWidget. 
+c. Tambahkan konstruktor untuk menerima parameter gameTerpilih berupa int (id game yang dikirim 
+dari Home). Di method build() buat Scaffold sederhana dengan AppBar dan body berisi 
+placeholder teks seperti “Halaman Detail (sementara)”. Kode programnya sebagai berikut: 
+1
+import 'package:flutter/material.dart'; 
+2
+ 
+3
+class Detail extends StatelessWidget {
+4
+  final int gameTerpilih; 
+5
+  const Detail({super.key, required this.gameTerpilih}); 
+6
+ 
+7
+  @override 
+8
+  Widget build(BuildContext context) { 
+9
+    return Scaffold( 
+10
+      appBar: AppBar(title: Text('Detail Game')), 
+11
+      body: Center(child: Text('Halaman Detail (sementara)')), 
+12
+);
+13
+  } 
+14
+} 
+ 
+Parameter gameTerpilih digunakan untuk menerima id game dari halaman Home. 
+d. Kemudian buat file dengan nama detailgame.dart di folder model/ sebagai model untuk 
+menyimpan data detail game yang diterima dari API. Dalam file tersebut import paket yang 
+dibutuhkan dan anotasi JSON serializable sebagai berikut: 
+1
+import 'package:json_annotation/json_annotation.dart';
+2
+ 
+3
+part 'detailgame.g.dart'; 
+ 
+part detailgame.g.dart; diperlukan agar build_runner bisa menghasilkan kode serialisasi otomatis. 
+Selanjutnya di bawah part detailgame.g.dart; tambahkan class MinimumSystemRequirements 
+1
+@JsonSerializable() 
+2
+class MinimumSystemRequirements { 
+3
+ final String os;
+4
+  final String processor; 
+5
+  final String memory; 
+6
+  final String graphics; 
+7
+ final String storage;
+8
+ 
+9
+  MinimumSystemRequirements({ 
+10
+    required this.os, 
+11
+    required this.processor, 
+12
+    required this.memory, 
+13
+    required this.graphics, 
+14
+    required this.storage, 
+15
+  }); 
+16
+ 
+17
+  factory MinimumSystemRequirements.fromJson(Map<String, dynamic> json) => 
+18
+      _$MinimumSystemRequirementsFromJson(json); 
+19
+  Map<String, dynamic> toJson() => _$MinimumSystemRequirementsToJson(this); 
+20
+} 
+ 
+Kemudian di bawahnya tambahkan class Screenshot. 
+
+
+=== PAGE 9 ===
+1
+@JsonSerializable() 
+2
+class Screenshot { 
+3
+  final int id; 
+4
+  final String image; 
+5
+ 
+6
+  Screenshot({required this.id, required this.image}); 
+7
+8
+  factory Screenshot.fromJson(Map<String, dynamic> json) => 
+9
+      _$ScreenshotFromJson(json); 
+10
+  Map<String, dynamic> toJson() => _$ScreenshotToJson(this); 
+11
+} 
+ 
+Terakhir tambahkan class DetailGame 
+1
+@JsonSerializable() 
+2
+class DetailGame {
+3
+  final int id; 
+4
+  final String title; 
+5
+ final String thumbnail;
+6
+  final String status; 
+7
+  final String short_description; 
+8
+ final String description;
+9
+  final String game_url; 
+10
+  final String genre; 
+11
+  final String platform; 
+12
+  final String publisher; 
+13
+  final String developer; 
+14
+  final String release_date; 
+15
+  final String freetogame_profile_url; 
+16
+  final MinimumSystemRequirements minimum_system_requirements; 
+17
+  final List<Screenshot> screenshots; 
+18
+ 
+19
+  DetailGame({ 
+20
+    required this.id, 
+21
+    required this.title, 
+22
+    required this.thumbnail, 
+23
+    required this.status, 
+24
+    required this.short_description, 
+25
+    required this.description, 
+26
+   required this.game_url,
+27
+    required this.genre, 
+28
+    required this.platform, 
+29
+   required this.publisher,
+30
+    required this.developer, 
+31
+    required this.release_date, 
+32
+   required this.freetogame_profile_url,
+33
+    required this.minimum_system_requirements, 
+34
+    required this.screenshots, 
+35
+ });
+36
+ 
+37
+  factory DetailGame.fromJson(Map<String, dynamic> json) => 
+38
+      _$DetailGameFromJson(json); 
+39
+  Map<String, dynamic> toJson() => _$DetailGameToJson(this); 
+40
+} 
+ 
+Berikutnya masih dalam folder model/ di terminal jalankan perintah: 
+flutter pub run build_runner build 
+Perintah ini akan membuat file detailgame.g.dart otomatis yang berisi fungsi fromJson dan toJson. 
+e. Buka file fetchgame.dart di folder viewmodel/ kemudian tambahkan kode program berikut untuk 
+request data detail game dari API eksternal berdasarkan gameTerpilih (id game) dan 
+mengembalikannya sebagai objek DetailGame. 
+
+
+=== PAGE 10 ===
+1
+Future<Map<String, dynamic>> fetchDataFromAPI(int idGame) async { 
+2
+  final response = await http 
+3
+     .get(Uri.parse('https://www.freetogame.com/api/game?id=$idGame'));
+4
+  if (response.statusCode == 200) { 
+5
+    final jsonData = json.decode(response.body); 
+6
+    if (jsonData != null && jsonData is Map<String, dynamic>) { 
+7
+      return jsonData; 
+8
+    } else { 
+9
+      throw Exception('Data dari API tidak sesuai dengan yang diharapkan'); 
+10
+    } 
+11
+  } else { 
+12
+   throw Exception('Gagal mengambil data dari API');
+13
+  } 
+14
+} 
+ 
+Fungsi fetchDataFromAPI bertugas request data detail game dari API berdasarkan idGame. Fungsi 
+ini bersifat asynchronous, sehingga mengembalikan Future<Map<String, dynamic>>. Method 
+mengirim permintaan GET ke API menggunakan http.get dan menunggu respons dengan await. 
+Jika status code respons adalah 200, data JSON yang diterima diubah dari string menjadi Map 
+Dart menggunakan json.decode. Selanjutnya, fungsi memeriksa apakah data yang diterima sesuai 
+tipe yang diharapkan, yaitu Map<String, dynamic>. Jika sesuai, data dikembalikan agar dapat 
+diproses lebih lanjut, misalnya diubah menjadi objek DetailGame. Jika data tidak sesuai format 
+atau permintaan ke API gagal, fungsi akan melempar exception untuk menandakan terjadi 
+kesalahan. 
+f. Buka kembali file detail.dart dalam folder view/ kemudian import fetchgame.dart dan 
+detailgame.dart seperti kode program berikut: 
+1
+import 'package:game_app/viewmodel/fetchgame.dart';
+2
+import 'package:game_app/model/detailgame.dart';
+3
+import 'package:readmore/readmore.dart';
+ 
+Setelah itu buat method fetchData() untuk request data detail game lewat API. Letakkan method 
+ini di dalam class Detail di atas method build() dengan kode program sebagai berikut: 
+1
+Future<DetailGame> fetchData() async { 
+2
+  final jsonData = await fetchDataFromAPI(gameTerpilih); 
+3
+  return DetailGame.fromJson(jsonData); 
+4
+} 
+ 
+- 
+gameTerpilih digunakan sebagai id game yang dikirim dari halaman Home. 
+- 
+fetchDataFromAPI() merupakan fungsi di viewmodel yang memanggil API eksternal dan 
+mengembalikan data JSON. 
+- 
+DetailGame.fromJson() mengubah JSON menjadi objek Dart yang dapat digunakan di Flutter. 
+- 
+Method ini dideklarasikan async dan mengembalikan Future<DetailGame> karena proses 
+pengambilan data bersifat asynchronous. 
+g. Ganti isi body pada method build() dengan kode program berikut untuk membuat struktur dasar 
+tampilan halaman detail. 
+
+
+=== PAGE 11 ===
+1
+@override 
+2
+Widget build(BuildContext context) { 
+3
+  return Scaffold( 
+4
+    backgroundColor: Colors.amberAccent.shade400, 
+5
+    body: FutureBuilder( 
+6
+      future: fetchData(), 
+7
+      builder: (context, snapshot) { 
+8
+       if (snapshot.connectionState == ConnectionState.waiting) {
+9
+          return const Center(child: CircularProgressIndicator()); 
+10
+        } else if (snapshot.hasError) { 
+11
+          return Center(child: Text('Terjadi kesalahan: ${snapshot.error}')); 
+12
+        } else if (!snapshot.hasData) { 
+13
+          return const Center(child: Text('Data tidak tersedia')); 
+14
+        } else { 
+15
+          final game = snapshot.data!; 
+16
+          return Column( 
+17
+            children: [ 
+18
+              // widget GUI akan ditambahkan di langkah berikutnya 
+19
+            ], 
+20
+          ); 
+21
+        } 
+22
+      } 
+23
+    ), 
+24
+ );
+25
+} 
+ 
+FutureBuilder digunakan untuk menangani pengambilan data secara asynchronous. Saat 
+menunggu respons dari API, CircularProgressIndicator ditampilkan sebagai indikator 
+pemrosesan. Jika terjadi kesalahan, pesan error akan muncul di layar. Setelah data berhasil 
+diterima, data tersebut disimpan ke dalam variabel game untuk digunakan pada widget selanjutnya. 
+h. Dalam widget Column yang ditandai dengan komentar // widget GUI akan ditambahkan di langkah 
+berikutnya tambahkan widget Header yang dibungkus dengan SizedBox untuk menampilkan 
+gambar dan back button menggunakan kombinasi Stack, ClipRRect, dan Positioned. Kode 
+programnya sebagai berikut: 
+1
+SizedBox( 
+2
+  width: double.infinity, 
+3
+  child: Stack( 
+4
+   children: [
+5
+      ClipRRect( 
+6
+        borderRadius: const BorderRadius.only( 
+7
+            bottomLeft: Radius.circular(25), 
+8
+            bottomRight: Radius.circular(25)), 
+9
+        child: Image.network( 
+10
+          game.thumbnail, 
+11
+          fit: BoxFit.cover, 
+12
+          height: 300, 
+13
+        ), 
+14
+      ), 
+15
+      Positioned( 
+16
+        top: 25, 
+17
+        left: 10, 
+18
+        child: GestureDetector( 
+19
+          onTap: () { 
+20
+            Navigator.pop(context); 
+21
+          }, 
+22
+          child: Container( 
+23
+            padding: const EdgeInsets.all(5), 
+24
+            decoration: BoxDecoration( 
+25
+              color: Colors.grey.withOpacity(0.8), 
+26
+              shape: BoxShape.circle, 
+27
+            ), 
+28
+            child: const Icon( 
+29
+              Icons.arrow_back_ios_outlined, 
+30
+              color: Colors.white, 
+31
+            ), 
+32
+          ), 
+33
+        ), 
+34
+      ), 
+35
+    ], 
+36
+  ), 
+37
+) 
+ 
+
+
+=== PAGE 12 ===
+i. Buat method _itemList() untuk menampilkan screenshot yang dapat digulir (scroll) secara 
+horizontal. Posisi method ini di luar class Detail. Adapun kode programnya sebagai berikut: 
+1
+SizedBox _itemList(String url) { 
+2
+  return SizedBox( 
+3
+    width: 250, 
+4
+    child: ClipRRect( 
+5
+      borderRadius: BorderRadius.circular(15), 
+6
+      child: Image.network( 
+7
+        url, 
+8
+        fit: BoxFit.cover, 
+9
+      ), 
+10
+    ), 
+11
+  ); 
+12
+} 
+ 
+Widget SizedBox digunakan untuk menentukan lebar gambar agar semua screenshot tampil 
+proporsional. Dedangkan ClipRRect memberikan efek sudut melengkung sehingga tampilan 
+gambar terlihat lebih rapi. Pengaturan ListView.scrollDirection: Axis.horizontal memungkinkan 
+pengguna menggulir gambar secara horizontal. Selain itu, SizedBox(width: 15) digunakan untuk 
+memberi jarak antar screenshot agar tidak saling menempel. Dengan menampilkan screenshot 
+dalam ListView horizontal, pengguna dapat melihat beberapa gambar sekaligus tanpa 
+menghabiskan ruang vertikal. Fungsi _itemList() juga membantu menambahkan lebih banyak 
+screenshot dengan mudah tanpa perlu menulis ulang widget untuk setiap gambar. 
+j. Di bawah Header tambahkan widget Expanded untuk menampilkan informasi Minimum System 
+Requirement yang dibungkus dengan widget Column di dalam widget SingleChildScrollView 
+dengan kode program sebagai berikut: 
+1
+Expanded(
+2
+  child: Container( 
+3
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10), 
+4
+    child: Container( 
+5
+      padding: const EdgeInsets.all(10), 
+6
+      width: double.infinity, 
+7
+      decoration: BoxDecoration( 
+8
+       color: Colors.blue.shade50,
+9
+        borderRadius: BorderRadius.circular(10), 
+10
+      ), 
+11
+      child: SingleChildScrollView( 
+12
+       child: Column(
+13
+         children: [
+14
+            SizedBox( 
+15
+              width: double.maxFinite, 
+16
+              child: Text( 
+17
+               'Minimum System Requirements',
+18
+                style: TextStyle( 
+19
+                  fontSize: 14, 
+20
+                 fontWeight: FontWeight.bold,
+21
+                  color: Colors.black54.withOpacity(0.8), 
+22
+                ), 
+23
+              ), 
+24
+           ),
+25
+            Column( 
+26
+              children: [ 
+27
+                _requirementRow('OS', game.minimum_system_requirements.os), 
+28
+                _requirementRow('Processor', 
+game.minimum_system_requirements.processor), 
+29
+                _requirementRow('Memory', 
+game.minimum_system_requirements.memory), 
+30
+                _requirementRow('Graphics', 
+game.minimum_system_requirements.graphics), 
+31
+               _requirementRow('Storage', 
+game.minimum_system_requirements.storage), 
+32
+              ], 
+33
+            ), 
+34
+          ], 
+35
+        ), 
+36
+     ),
+37
+    ), 
+38
+  ), 
+39
+) 
+ 
+
+
+=== PAGE 13 ===
+k. Buat method _requirementRow() di luar class Detail tepatnya di bawah method _itemList(). Kode 
+programnya sebagai berikut: 
+1
+Row _requirementRow(String title, String value) { 
+2
+  return Row( 
+3
+    crossAxisAlignment: CrossAxisAlignment.start, 
+4
+    children: [ 
+5
+      Expanded(flex: 3, child: Text(title, style: TextStyle(color: 
+Colors.black54.withOpacity(0.8)))), 
+6
+      Expanded(flex: 1, child: Text(':', style: TextStyle(color: 
+Colors.black54.withOpacity(0.8)))), 
+7
+      Expanded(flex: 8, child: Text(value, style: TextStyle(color: 
+Colors.black54.withOpacity(0.8)))), 
+8
+    ], 
+9
+  ); 
+10
+} 
+ 
+Method ini digunakan untuk menampilkan setiap baris requirement dengan format yang rapi. 
+Terdiri atas judul, tanda titik dua, dan nilai (value). Widget Expanded menjaga proporsi teks agar 
+tetap konsisten dan responsif di berbagai ukuran layar. Container utama untuk sistem requirement 
+menggunakan BoxDecoration sehingga tampil menyerupai kartu dengan sudut melengkung 
+(borderRadius) dan latar belakang yang berbeda. Selain itu, SingleChildScrollView memungkinkan 
+halaman digulir ketika konten terlalu panjang. Method _requirementRow juga mempermudah 
+penambahan requirement baru tanpa harus menulis ulang tata letak untuk setiap baris. 
+l. Di bawah minimal system requierement tambahkan widget untuk menampilkan screenshot yang 
+dapat digulir (scroll) secara horizontal dengan widget Listview. Adapun kode programnya sebagai 
+berikut: 
+1
+Container( 
+2
+  height: 200, 
+3
+  padding: const EdgeInsets.symmetric(vertical: 20), 
+4
+  child: ListView( 
+5
+    scrollDirection: Axis.horizontal, 
+6
+    children: [ 
+7
+      _itemList(game.screenshots[0].image), 
+8
+      const SizedBox(width: 15), 
+9
+      _itemList(game.screenshots[1].image), 
+10
+      const SizedBox(width: 15), 
+11
+      _itemList(game.screenshots[2].image), 
+12
+    ], 
+13
+ ),
+14
+) 
+ 
+m. Setelah widget screenshot, di bawahnya tambahkan widget Container untuk menampilkan 
+deskripsi dengan kode program sebagai berikut: 
+1
+Container( 
+2
+  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5), 
+3
+  child: ReadMoreText( 
+4
+    game.description, 
+5
+    trimLines: 2, 
+6
+    colorClickableText: Colors.amberAccent.shade400, 
+7
+    trimMode: TrimMode.Line, 
+8
+    style: TextStyle( 
+9
+        color: Colors.black54.withOpacity(0.8), 
+10
+        height: 1.5 
+11
+    ), 
+12
+    trimCollapsedText: 'more', 
+13
+   trimExpandedText: 'less',
+14
+  ), 
+15
+) 
+ 
+Bagian Deskripsi menampilkan keterangan singkat tentang game menggunakan ReadMoreText 
+dari paket readmore. Widget ini memungkinkan teks yang panjang ditampilkan sebagian terlebih 
+
+
+=== PAGE 14 ===
+dahulu dan dapat diperluas ketika pengguna menekan tombol “more”. Properti trimLines: 2 
+menentukan bahwa hanya dua baris awal teks yang ditampilkan sebelum dipotong. Sementara itu, 
+trimCollapsedText dan trimExpandedText digunakan sebagai label tombol untuk memperluas atau 
+menutup teks. Properti style mengatur warna serta jarak antarbaris agar teks lebih nyaman dibaca, 
+dan Container digunakan untuk memberikan padding sehingga teks tidak menempel langsung 
+pada sisi layar. 
+n. Buka file main.dart kemudian import file detail.dart seperti kode program berikut: 
+1
+import 'package:game_app/view/detail.dart';
+ 
+Kemudian edit bagian kode program MaterialApp menjadi sebagai berikut: 
+1
+return MaterialApp( 
+2
+  debugShowCheckedModeBanner: false, 
+3
+  title: 'Flutter Game Store', 
+4
+  initialRoute: '/', 
+5
+  routes: { 
+6
+    '/': (context) => const Home(), 
+7
+    '/detail': (context) { 
+8
+      final gameId = ModalRoute.of(context)!.settings.arguments as int; 
+9
+      return Detail(gameTerpilih: gameId); 
+10
+    }, 
+11
+  }, 
+12
+); 
+ 
+Properti initialRoute: ‘/’ menentukan halaman pertama yang ditampilkan saat aplikasi dijalankan. 
+Sedangkan routes berfungsi sebagai peta yang menghubungkan route name dengan halaman yang 
+sesuai. 
+Untuk 
+menerima 
+data 
+dari 
+halaman 
+sebelumnya, 
+digunakan 
+ModalRoute.of(context)!.settings.arguments, yang berperan menangkap parameter yang dikirim 
+saat navigasi antarhalaman. 
+o. Jalankan program kemudian pilih salah satu game yang ditampilkan di List, maka di halaman 
+detail akan tampil informasi detail game seperti gambar berikut: 
+ 
+ 
+
+
+=== PAGE 15 ===
+10.3. Kesimpulan 
+a. Widget FutureBuilder memudahkan menampilkan data dari API secara asinkron, termasuk status 
+loading dan error. 
+b. Widget ListView.builder dan Card digunakan untuk membuat daftar item game yang rapi dan 
+dinamis. 
+c. Navigasi antar halaman (Home → Detail) dapat dilakukan dengan Navigator.push atau 
+Navigator.pushNamed dengan mengirim data. 
+d. Model data Game dan DetailGame dengan json_serializable mempermudah konversi JSON ke 
+objek Dart. 
+ 
+10.4. Tugas 
+Buatlah laporan hasil praktikum dari Modul 10 yang berisi penjelasan mengenai proses pembuatan 
+dan hasil akhir aplikasi yang telah dikembangkan. Laporan mencakup tujuan kegiatan, langkah-
+langkah praktikum, penjelasan kode program utama, hasil tampilan aplikasi, serta kesimpulan dari 
+kegiatan. Sertakan tangkapan layar aplikasi sebagai bukti hasil kerja. Laporan ditulis secara sistematis 
+dan rapi sesuai format yang telah ditentukan. 
+ 
+10.5. Format laporan. 
+a. Cover 
+Berisi judul tugas, nama, NIM, kelas, dan tanggal praktikum. 
+b. Tujuan 
+Menjelaskan tujuan tugas, misalnya: memahami penerapan named route dalam navigasi aplikasi 
+Flutter, mengelola perpindahan antar halaman dengan lebih terstruktur, serta menerapkan konsep 
+modularisasi untuk meningkatkan keterbacaan dan pemeliharaan kode. 
+c. Langkah Kerja Singkat 
+- 
+Membuat proyek Flutter baru bernama named_route_app. 
+- 
+Membuat beberapa halaman (screens), misalnya HomePage, dan DetailPage. 
+- 
+Menambahkan konfigurasi named route pada file main.dart menggunakan MaterialApp 
+dengan properti routes. 
+- 
+Mengimplementasikan navigasi antar halaman menggunakan Navigator.pushNamed() dan 
+Navigator.pop(). 
+- 
+Menambahkan tombol navigasi di setiap halaman untuk berpindah ke halaman lain. 
+- 
+Menjalankan aplikasi untuk memastikan navigasi berjalan sesuai rute yang telah ditentukan. 
+
+
+=== PAGE 16 ===
+d. Screenshot 
+Menyertakan tangkapan layar aplikasi Flutter yang menampilkan proses navigasi antar halaman 
+dengan named route, disertai keterangan singkat pada setiap gambar. 
+e. Ringkasan Hasil 
+Memuat poin pengetahuan yang diperoleh, misalnya: 
+- 
+Named route mempermudah pengelolaan navigasi antar halaman dalam aplikasi berskala 
+besar. 
+- 
+Struktur route yang terpusat di MaterialApp membantu menjaga konsistensi alur navigasi. 
+- 
+Penggunaan Navigator.pushNamed() untuk berpindah halaman dan Navigator.pop() untuk 
+kembali ke halaman sebelumnya membuat proses navigasi dalam aplikasi menjadi lebih 
+sederhana, terstruktur, dan mudah dipahami. 
+- 
+Modularisasi halaman mendukung pengembangan aplikasi Flutter yang efisien dan 
+terorganisasi. 
+ 
+ 
+ 
+
+
